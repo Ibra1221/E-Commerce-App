@@ -1,0 +1,15 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: true
+  background_image: assets/images/White Creme Background.jpg
+  image: assets/images/logoipsum-255 1.png
+  color: "#FFFFFF"
+  color_dark: "#000000"
+  image_dark: assets/images/logoipsum-255 1.png
+  android_12:
+    image: assets/images/logoipsum-255 1.png
+    color: "#FFFFFF"
+    color_dark: "#000000"
+    image_dark: assets/images/logoipsum-255 1.png
+
