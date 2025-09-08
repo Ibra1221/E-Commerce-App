@@ -29,7 +29,7 @@ class ApiService {
 
   Future<List<ProductModel>> loadProducts() async {
     
-      final response = await fetchProducts('/produts');
+      final response = await fetchProducts('/products');
       if(response.statusCode == 200){
       final rawList = response.data['products'] as List;
       final list = rawList.map((e) => ProductModel.fromJson(e)).toList();

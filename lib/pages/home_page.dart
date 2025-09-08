@@ -2,9 +2,9 @@ import 'package:e_commerce_project/main.dart';
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
 import '../api_service.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:dio/dio.dart';
 import 'error_page.dart';
+import 'products_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _response = ApiService().fetchProducts('/produts');
+    _response = ApiService().fetchProducts('/products');
     _popularResponse = ApiService().fetchProducts(
       '/products?sortBy=rating&order=desc',
     );
@@ -83,6 +83,120 @@ class _HomePageState extends State<HomePage> {
     _popularProducts = ApiService().loadPopularProducts();
   }
 
+  Widget cardBuilder(
+    List<ProductModel> products,
+    int index,
+    List<int> favourites,
+  ) {
+    return GestureDetector(
+      onTap: () => {
+        setState(() {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => ProductPage(title: "Product"),
+          //     settings: RouteSettings(arguments: products[index]),
+          //   ),
+          // );
+        }),
+      },
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 126,
+              height: 99,
+              child: Stack(
+                children: [
+                  SizedBox(
+                    width: 126,
+                    height: 99,
+                    child: Image.network(
+                      products[index].images![0],
+                      width: 126,
+                      height: 99,
+                    ),
+                  ),
+                  Positioned(
+                    left: 84,
+                    top: 8,
+                    child: IconButton(
+                      onPressed: () => {
+                        setState(() {
+                          if (favourites.contains(index)) {
+                            favourites.remove(index);
+                          } else {
+                            favourites.add(index);
+                          }
+                        }),
+                      },
+                      icon: Icon(
+                        favourites.contains(index)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 5)),
+            Container(
+              width: 126,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+                color: Color(0xFFF8F7F7),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 21,
+                      width: double.infinity,
+                      child: Text(
+                        products[index].title!,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins",
+                          fontSize: 14,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 18,
+                      width: double.infinity,
+                      child: Text(
+                        "\$${products[index].price!.toString()}",
+                        style: TextStyle(
+                          color: Color(0xFF6055D8),
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins",
+                          fontSize: 12,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget listBuilder(List<ProductModel> products, List<int> favourites) {
     return SizedBox(
       height: 173,
@@ -90,113 +204,7 @@ class _HomePageState extends State<HomePage> {
         scrollDirection: Axis.horizontal,
         itemCount: products.isEmpty ? 0 : products.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () => {
-              setState(() {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ProductPage(title: "Product"),
-                //     settings: RouteSettings(arguments: products[index]),
-                //   ),
-                // );
-              }),
-            },
-            child: Card(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 126,
-                    height: 99,
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                          width: 126,
-                          height: 99,
-                          child: Image.network(
-                            products[index].images![0],
-                            width: 126,
-                            height: 99,
-                          ),
-                        ),
-                        Positioned(
-                          left: 84,
-                          top: 8,
-                          child: IconButton(
-                            onPressed: () => {
-                              setState(() {
-                                if (favourites.contains(index)) {
-                                  favourites.remove(index);
-                                } else {
-                                  favourites.add(index);
-                                }
-                              }),
-                            },
-                            icon: Icon(
-                              favourites.contains(index)
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 5)),
-                  Container(
-                    width: 126,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      color: Color(0xFFF8F7F7),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 21,
-                            width: double.infinity,
-                            child: Text(
-                              products[index].title!,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Poppins",
-                                fontSize: 14,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 18,
-                            width: double.infinity,
-                            child: Text(
-                              "\$${products[index].price!.toString()}",
-                              style: TextStyle(
-                                color: Color(0xFF6055D8),
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Poppins",
-                                fontSize: 12,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return cardBuilder(products, index, favourites);
         },
       ),
     );
@@ -434,7 +442,32 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () => {},
+                                    onTap: () async {
+                                      final products = await _products;
+                                      if (products != null) {
+                                        final featuredProducts = products
+                                    .where(
+                                      (product) =>
+                                          product.rating! >=
+                                              4.5 && // High rated
+                                          product.price! <=
+                                              500 && // Not too expensive
+                                          product.stock! > 15, // Well stocked
+                                    )
+                                    .toList();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductsListPage(
+                                                  products: featuredProducts,
+                                                  favourites: favouriteIndices,
+                                                  title: "Featured",
+                                                ),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     child: Text(
                                       "See All",
                                       style: TextStyle(
@@ -497,7 +530,22 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () => {},
+                                    onTap: () async {
+                                      final popularProducts = await _popularProducts;
+                                      if (popularProducts != null) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductsListPage(
+                                                  products: popularProducts,
+                                                  favourites: favouritePopularIndices,
+                                                  title: "Most Popular",
+                                                ),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     child: Text(
                                       "See All",
                                       style: TextStyle(
