@@ -39,7 +39,10 @@ class _ChooseProductsPageState extends State<ChooseProductsPage> {
       backgroundColor: Colors.black,
       body: Center(
         child: Container(
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30)
+            ),
           width: 375,
           height: 812,
           child: SafeArea(

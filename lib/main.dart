@@ -1,9 +1,11 @@
+import 'package:e_commerce_project/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'pages/make_payment.dart';
 import 'pages/get_your_order.dart';
 import 'pages/choose_products_page.dart';
 import 'package:provider/provider.dart';
 import '../providers/favourite_provider.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,13 +16,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FavouriteProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => FavouriteProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        ),
+      ],
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: const MainPage(title: 'Flutter Demo Home Page'),
-      ),
+            title: 'Flutter Demo',
+            theme: ThemeData(primarySwatch: Colors.blue),
+            home: const MainPage(title: 'Flutter Demo Home Page'),
+          ),
     );
   }
 }
@@ -37,8 +46,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
-
   @override
   void initState() {
     super.initState();
@@ -63,7 +70,6 @@ class _MainPageState extends State<MainPage> {
           GetYourOrderPage(title: "Get Your Order"),
         ],
       ),
-    
     );
   }
 }

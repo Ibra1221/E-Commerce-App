@@ -164,7 +164,10 @@ class ProductsListPageState extends State<ProductsListPage> {
       body: Center(
         child: SafeArea(
           child: Container(
-            decoration: BoxDecoration(color: Colors.white),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30)
+              ),
             width: 375,
             height: 812,
             child: Padding(

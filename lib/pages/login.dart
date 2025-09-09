@@ -54,7 +54,10 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           width: 375,
           height: 812,
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30)
+            ),
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

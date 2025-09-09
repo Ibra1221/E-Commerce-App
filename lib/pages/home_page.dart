@@ -8,6 +8,7 @@ import 'products_list.dart';
 import '../providers/favourite_provider.dart';
 import 'package:provider/provider.dart';
 import 'product.dart';
+import 'cart_page.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -37,6 +38,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String currentPage = "Home";
   var _formKey = GlobalKey<FormState>();
   late Future<List<ProductModel>?> _products;
   late Future<List<ProductModel>?> _popularProducts;
@@ -96,13 +98,11 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  ProductPage(
-                  title: "Product", 
-                  product: products[index],
-                  index: index,
-                  ),
-
+              builder: (context) => ProductPage(
+                title: "Product",
+                product: products[index],
+                index: index,
+              ),
             ),
           );
         }),
@@ -129,20 +129,25 @@ class _HomePageState extends State<HomePage> {
                     left: 84,
                     top: 8,
                     child: IconButton(
-                          icon: !Provider.of<FavouriteProvider>(context, listen: true)
-                          .favourites.contains(products[index])? 
-                          Icon(Icons.favorite_border):
-                          Icon(Icons.favorite) ,
-                          style: IconButton.styleFrom(
-                            backgroundColor: Color(0xFFF8F7F7),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              Provider.of<FavouriteProvider>(context, listen: false)
-                                  .addToFavourites(products[index]);
-                            });
-                          },
-                        ),
+                      icon:
+                          !Provider.of<FavouriteProvider>(
+                            context,
+                            listen: true,
+                          ).favourites.contains(products[index])
+                          ? Icon(Icons.favorite_border)
+                          : Icon(Icons.favorite),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Color(0xFFF8F7F7),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          Provider.of<FavouriteProvider>(
+                            context,
+                            listen: false,
+                          ).addToFavourites(products[index]);
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -231,29 +236,38 @@ class _HomePageState extends State<HomePage> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          iconBuilder(Icon(Icons.home, color: Color(0xFF6055D8))),
-          iconBuilder(Icon(Icons.search, color: Color(0xFF9E9E9E))),
-          iconBuilder(Icon(Icons.shopping_bag, color: Color(0xFF9E9E9E))),
-          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E))),
+          iconBuilder(Icon(Icons.home, color: Color(0xFF6055D8)),"Home"),
+          iconBuilder(Icon(Icons.search, color: Color(0xFF9E9E9E)),"Search"),
+          iconBuilder(Icon(Icons.shopping_bag, color: Color(0xFF9E9E9E)), "Bag"),
+          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)),"Account"),
         ],
       ),
     );
   }
 
-  Widget iconBuilder(Icon icon) {
-    return IconButton(
-      onPressed: () => {
-        // if (label == "Bag")
-        //   {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) => CartPage(title: "Bag"),
-        //       ),
-        //     ),
-        //   },
-      },
-      icon: icon,
+  Widget iconBuilder(Icon icon, String label) {
+    return Column(
+      children: [
+        IconButton(
+          onPressed: () => {
+            if (label == "Bag" && currentPage != "Bag")
+              {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(),
+                  ),
+                ),
+              }
+              else{
+                if(label == "Home" && currentPage != "Home"){
+                  Navigator.pop(context)
+                }
+              }
+          },
+          icon: icon,
+        ),
+      ],
     );
   }
 
@@ -269,7 +283,13 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.white),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)
+                    ),
+                  ),
                   child: SafeArea(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -356,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                                           width: 0.1,
                                         ),
                                       ),
-
+                    
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(30),
                                       ),
@@ -452,15 +472,16 @@ class _HomePageState extends State<HomePage> {
                                       final products = await _products;
                                       if (products != null) {
                                         final featuredProducts = products
-                                    .where(
-                                      (product) =>
-                                          product.rating! >=
-                                              4.5 && // High rated
-                                          product.price! <=
-                                              500 && // Not too expensive
-                                          product.stock! > 15, // Well stocked
-                                    )
-                                    .toList();
+                                            .where(
+                                              (product) =>
+                                                  product.rating! >=
+                                                      4.5 && // High rated
+                                                  product.price! <=
+                                                      500 && // Not too expensive
+                                                  product.stock! >
+                                                      15, // Well stocked
+                                            )
+                                            .toList();
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -496,13 +517,13 @@ class _HomePageState extends State<HomePage> {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-
+                    
                                 if (snapshot.hasError) {
                                   return Center(
                                     child: Text('Error: ${snapshot.error}'),
                                   );
                                 }
-
+                    
                                 final products = snapshot.data!;
                                 final featuredProducts = products
                                     .where(
@@ -537,7 +558,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   InkWell(
                                     onTap: () async {
-                                      final popularProducts = await _popularProducts;
+                                      final popularProducts =
+                                          await _popularProducts;
                                       if (popularProducts != null) {
                                         Navigator.push(
                                           context,
@@ -545,7 +567,8 @@ class _HomePageState extends State<HomePage> {
                                             builder: (context) =>
                                                 ProductsListPage(
                                                   products: popularProducts,
-                                                  favourites: favouritePopularIndices,
+                                                  favourites:
+                                                      favouritePopularIndices,
                                                   title: "Most Popular",
                                                 ),
                                           ),
@@ -574,13 +597,13 @@ class _HomePageState extends State<HomePage> {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-
+                    
                                 if (snapshot.hasError) {
                                   return Center(
                                     child: Text('Error: ${snapshot.error}'),
                                   );
                                 }
-
+                    
                                 final products = snapshot.data!;
                                 return listBuilder(
                                   products,
@@ -595,7 +618,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              bottomBarBuilder(),
+              bottomBarBuilder()
             ],
           ),
         ),
