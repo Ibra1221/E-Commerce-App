@@ -26,6 +26,9 @@ class CartProvider extends ChangeNotifier {
 
     if (existingIndex != -1) {
       _cartItems[existingIndex].quantity -= quantity;
+      if (_cartItems[existingIndex].quantity == 0) {
+        _cartItems.removeAt(existingIndex);
+      }
     } else {
       return;
     }
@@ -38,5 +41,17 @@ class CartProvider extends ChangeNotifier {
 
   num getTotalPrice() {
     return _cartItems.fold(0, (sum, item) => sum + item.totalPrice);
+  }
+
+  num getDiscount() {
+    return _cartItems.fold(
+      0,
+      (discount, item) =>
+          discount + item.totalPrice * item.product.discountPercentage!/100,
+    );
+  }
+
+  num getFinalPrice() {
+    return getTotalPrice() - getDiscount();
   }
 }

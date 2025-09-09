@@ -118,6 +118,8 @@ flutter:
           weight: 300
         - asset: assets/fonts/poppins.regular.ttf
           weight: 400
+        - asset: asset/fonts/poppins.medium.ttf
+          weight: 500
     - family: Roboto
       fonts: 
         - asset: assets/fonts/roboto.bold.ttf
@@ -128,6 +130,7 @@ flutter:
           weight: 700
         - asset: assets/fonts/nunito.semibold.ttf
           weight: 600
+
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
