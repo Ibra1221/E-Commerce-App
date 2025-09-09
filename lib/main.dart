@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'pages/make_payment.dart';
 import 'pages/get_your_order.dart';
 import 'pages/choose_products_page.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/favourite_provider.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -13,12 +14,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return ChangeNotifierProvider(
+      create: (context) => FavouriteProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: const MainPage(title: 'Flutter Demo Home Page'),
       ),
-      home: const MainPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -36,16 +38,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _counter = 0;
-  int _curr_page = 0;
-
-  
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   void initState() {

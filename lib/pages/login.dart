@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 67),
+                  padding: EdgeInsets.only(top: 167),
                   child: Center(
                     child: TextButton(
                       style: TextButton.styleFrom(

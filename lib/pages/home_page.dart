@@ -5,7 +5,9 @@ import '../api_service.dart';
 import 'package:dio/dio.dart';
 import 'error_page.dart';
 import 'products_list.dart';
-
+import '../providers/favourite_provider.dart';
+import 'package:provider/provider.dart';
+import 'product.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -91,13 +93,19 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () => {
         setState(() {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ProductPage(title: "Product"),
-          //     settings: RouteSettings(arguments: products[index]),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ProductPage(
+                  title: "Product", 
+                  product: products[index],
+                  favourites: favourites,
+                  index: index,
+                  ),
+
+            ),
+          );
         }),
       },
       child: Card(
@@ -122,21 +130,20 @@ class _HomePageState extends State<HomePage> {
                     left: 84,
                     top: 8,
                     child: IconButton(
-                      onPressed: () => {
-                        setState(() {
-                          if (favourites.contains(index)) {
-                            favourites.remove(index);
-                          } else {
-                            favourites.add(index);
-                          }
-                        }),
-                      },
-                      icon: Icon(
-                        favourites.contains(index)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                      ),
-                    ),
+                          icon: !Provider.of<FavouriteProvider>(context, listen: true)
+                          .favourites.contains(products[index])? 
+                          Icon(Icons.favorite_border):
+                          Icon(Icons.favorite) ,
+                          style: IconButton.styleFrom(
+                            backgroundColor: Color(0xFFF8F7F7),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              Provider.of<FavouriteProvider>(context, listen: false)
+                                  .addToFavourites(products[index]);
+                            });
+                          },
+                        ),
                   ),
                 ],
               ),

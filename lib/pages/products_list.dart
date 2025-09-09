@@ -1,6 +1,9 @@
 import 'package:e_commerce_project/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
+import 'product.dart';
+import 'package:provider/provider.dart';
+import '../providers/favourite_provider.dart';
 
 class ProductsListPage extends StatefulWidget {
   final List<ProductModel> products;
@@ -10,7 +13,7 @@ class ProductsListPage extends StatefulWidget {
     super.key,
     required this.products,
     required this.favourites,
-    required this.title
+    required this.title,
   });
 
   @override
@@ -22,18 +25,23 @@ class ProductsListPageState extends State<ProductsListPage> {
     List<ProductModel> products,
     int index,
     List<int> favourites,
-    
   ) {
     return GestureDetector(
       onTap: () => {
         setState(() {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ProductPage(title: "Product"),
-          //     settings: RouteSettings(arguments: products[index]),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ProductPage(
+                  title: "Product", 
+                  product: products[index],
+                  favourites: favourites,
+                  index: index,
+                  ),
+
+            ),
+          );
         }),
       },
       child: Card(
@@ -60,17 +68,16 @@ class ProductsListPageState extends State<ProductsListPage> {
                     child: IconButton(
                       onPressed: () => {
                         setState(() {
-                          if (favourites.contains(index)) {
-                            favourites.remove(index);
-                          } else {
-                            favourites.add(index);
-                          }
+                          Provider.of<FavouriteProvider>(context, listen: false)
+                              .addToFavourites(products[index]);
                         }),
                       },
                       icon: Icon(
-                        favourites.contains(index)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
+                        !Provider.of<FavouriteProvider>(
+                          context, listen: true
+                          ).favourites.contains(products[index])
+                            ? Icons.favorite_border
+                            : Icons.favorite,
                       ),
                     ),
                   ),
@@ -169,6 +176,9 @@ class ProductsListPageState extends State<ProductsListPage> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.arrow_back),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Color(0xFFF8F7F7),
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -206,7 +216,7 @@ class ProductsListPageState extends State<ProductsListPage> {
                                     widget.favourites,
                                   )
                                 : SizedBox(),
-                                Spacer(),
+                            Spacer(),
                             secondIndex < widget.products.length
                                 ? cardBuilder(
                                     widget.products,

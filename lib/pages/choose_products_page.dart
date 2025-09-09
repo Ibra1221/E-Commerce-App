@@ -32,13 +32,6 @@ class ChooseProductsPage extends StatefulWidget {
 }
 
 class _ChooseProductsPageState extends State<ChooseProductsPage> {
-  int _counter = 0;
-  int _curr_page = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
