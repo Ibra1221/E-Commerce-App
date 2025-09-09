@@ -36,7 +36,6 @@ class ProductsListPageState extends State<ProductsListPage> {
                   ProductPage(
                   title: "Product", 
                   product: products[index],
-                  favourites: favourites,
                   index: index,
                   ),
 

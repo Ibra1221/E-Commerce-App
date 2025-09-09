@@ -100,7 +100,6 @@ class _HomePageState extends State<HomePage> {
                   ProductPage(
                   title: "Product", 
                   product: products[index],
-                  favourites: favourites,
                   index: index,
                   ),
 

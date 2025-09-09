@@ -33,14 +33,7 @@ class GetYourOrderPage extends StatefulWidget {
 }
 
 class _GetYourOrderPageState extends State<GetYourOrderPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     
