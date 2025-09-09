@@ -4,6 +4,7 @@ import '../models/product_model.dart';
 import 'product.dart';
 import 'package:provider/provider.dart';
 import '../providers/favourite_provider.dart';
+import '../providers/cart_provider.dart';
 
 class ProductsListPage extends StatefulWidget {
   final List<ProductModel> products;
@@ -139,7 +140,12 @@ class ProductsListPageState extends State<ProductsListPage> {
                       child: IconButton(
                         padding: EdgeInsets.only(right: 12),
                         constraints: BoxConstraints(),
-                        onPressed: () {},
+                        onPressed: () {
+                          Provider.of<CartProvider>(
+                                        context,
+                                        listen: false,
+                                      ).addToCart(widget.products[index], 1);
+                        },
                         icon: Icon(
                           Icons.add_circle,
                           color: Color(0xFF6055D8),
