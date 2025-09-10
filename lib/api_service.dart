@@ -51,6 +51,19 @@ class ApiService {
       throw Exception('Failed to load products');
     }
   }
+
+  Future<List<ProductModel>> SearchProducts(String searchArgs) async {
+   final response = await fetchProducts('/products/search?q=$searchArgs');
+      if(response.statusCode == 200){
+      final rawList = response.data['products'] as List;
+      final list = rawList.map((e) => ProductModel.fromJson(e)).toList();
+      return list;
+  }
+     else {
+      throw Exception('Failed to load products');
+    }
+  }
+
   }
 
 

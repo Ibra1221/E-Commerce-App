@@ -9,6 +9,8 @@ import '../providers/favourite_provider.dart';
 import 'package:provider/provider.dart';
 import 'product.dart';
 import 'cart_page.dart';
+import 'search.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -236,10 +238,13 @@ class _HomePageState extends State<HomePage> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          iconBuilder(Icon(Icons.home, color: Color(0xFF6055D8)),"Home"),
-          iconBuilder(Icon(Icons.search, color: Color(0xFF9E9E9E)),"Search"),
-          iconBuilder(Icon(Icons.shopping_bag, color: Color(0xFF9E9E9E)), "Bag"),
-          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)),"Account"),
+          iconBuilder(Icon(Icons.home, color: Color(0xFF6055D8)), "Home"),
+          iconBuilder(Icon(Icons.search, color: Color(0xFF9E9E9E)), "Search"),
+          iconBuilder(
+            Icon(Icons.shopping_bag, color: Color(0xFF9E9E9E)),
+            "Bag",
+          ),
+          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)), "Account"),
         ],
       ),
     );
@@ -254,16 +259,28 @@ class _HomePageState extends State<HomePage> {
               {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => CartPage(),
-                  ),
+                  MaterialPageRoute(builder: (context) => CartPage()),
                 ),
               }
-              else{
-                if(label == "Home" && currentPage != "Home"){
-                  Navigator.pop(context)
-                }
-              }
+            else
+              {
+                if (label == "Home" && currentPage != "Home")
+                  {
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage(
+                    title: "Home"
+                  )),
+                ),
+                    }
+                  else 
+                  if(label == "Search" && currentPage != "Search"){
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPage()),
+                ),
+                  }
+              },
           },
           icon: icon,
         ),
@@ -287,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)
+                      topRight: Radius.circular(30),
                     ),
                   ),
                   child: SafeArea(
@@ -367,18 +384,30 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: TextFormField(
+                                    onTap: () {
+                                      Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchPage(),
+                                    ),
+                                  );
+                                    },
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(Icons.search),
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
                                         borderSide: BorderSide(
                                           color: Color(0xFFF8F7F7),
                                           width: 0.1,
                                         ),
                                       ),
-                    
+                              
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
+                                        borderRadius: BorderRadius.circular(
+                                          30,
+                                        ),
                                       ),
                                       labelText: "Search here",
                                       labelStyle: TextStyle(
@@ -517,13 +546,13 @@ class _HomePageState extends State<HomePage> {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-                    
+
                                 if (snapshot.hasError) {
                                   return Center(
                                     child: Text('Error: ${snapshot.error}'),
                                   );
                                 }
-                    
+
                                 final products = snapshot.data!;
                                 final featuredProducts = products
                                     .where(
@@ -597,13 +626,13 @@ class _HomePageState extends State<HomePage> {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-                    
+
                                 if (snapshot.hasError) {
                                   return Center(
                                     child: Text('Error: ${snapshot.error}'),
                                   );
                                 }
-                    
+
                                 final products = snapshot.data!;
                                 return listBuilder(
                                   products,
@@ -618,7 +647,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              bottomBarBuilder()
+              bottomBarBuilder(),
             ],
           ),
         ),
