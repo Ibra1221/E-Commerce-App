@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mdi/mdi.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import 'orders.dart';
+import '../providers/orders_provider.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -28,14 +30,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
         Spacer(),
         IconButton(
           onPressed: () {},
-          icon: selected ? 
-          Icon(
-            Icons.check, 
-            color: Color(0xFF6055D8),
-            ) : 
-            Icon(
-              Icons.circle_outlined, color: Colors.white,
-              ),
+          icon: selected
+              ? Icon(Icons.check, color: Color(0xFF6055D8))
+              : Icon(Icons.circle_outlined, color: Colors.white),
         ),
       ],
     );
@@ -44,6 +41,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
+    final ordersList = Provider.of<OrdersProvider>(context);
     final cart = Provider.of<CartProvider>(context);
     final paymentMethods = [
       {"icon": Icons.paypal, "label": "  PayPal"},
@@ -338,8 +336,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         ),
                       ),
                     );
-                  }
-                  ),
+                  }),
                   Row(
                     children: [
                       Text(
@@ -353,13 +350,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                       Spacer(),
                       IconButton(
-                        onPressed: () {}, 
-                        icon: Icon(
-                          Icons.add,
-                          color: Color(0xFF6055D8),
-                          )
-                        )
-                  ],
+                        onPressed: () {},
+                        icon: Icon(Icons.add, color: Color(0xFF6055D8)),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     width: 343,
@@ -371,12 +365,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         ),
                       ),
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => CheckoutPage(),
-                        //   ),
-                        // );
+                        setState(() {
+                          final itemsToOrder = List.from(cart.cartitems); // copy before modifying
+
+                          for (final cartItem in itemsToOrder) {
+                            ordersList.addToOrders(cartItem.product);
+                            cart.removeFromCart(cartItem.product, cartItem.quantity);
+                          }
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OrdersPage()),
+                        );
+                        });
                       },
                       child: Text(
                         "Check Out",
