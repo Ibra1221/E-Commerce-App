@@ -7,6 +7,7 @@ import '../models/product_model.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favourite_provider.dart';
+import 'filter.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -87,23 +88,18 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget cardBuilder(
-    List<ProductModel> products,
-    int index,
-  ) {
+  Widget cardBuilder(List<ProductModel> products, int index) {
     return GestureDetector(
       onTap: () => {
         setState(() {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  ProductPage(
-                  title: "Product", 
-                  product: products[index],
-                  index: index,
-                  ),
-
+              builder: (context) => ProductPage(
+                title: "Product",
+                product: products[index],
+                index: index,
+              ),
             ),
           );
         }),
@@ -132,14 +128,17 @@ class _SearchPageState extends State<SearchPage> {
                     child: IconButton(
                       onPressed: () => {
                         setState(() {
-                          Provider.of<FavouriteProvider>(context, listen: false)
-                              .addToFavourites(products[index]);
+                          Provider.of<FavouriteProvider>(
+                            context,
+                            listen: false,
+                          ).addToFavourites(products[index]);
                         }),
                       },
                       icon: Icon(
                         !Provider.of<FavouriteProvider>(
-                          context, listen: true
-                          ).favourites.contains(products[index])
+                              context,
+                              listen: true,
+                            ).favourites.contains(products[index])
                             ? Icons.favorite_border
                             : Icons.favorite,
                       ),
@@ -206,9 +205,9 @@ class _SearchPageState extends State<SearchPage> {
                         constraints: BoxConstraints(),
                         onPressed: () {
                           Provider.of<CartProvider>(
-                                        context,
-                                        listen: false,
-                                      ).addToCart(products[index], 1);
+                            context,
+                            listen: false,
+                          ).addToCart(products[index], 1);
                         },
                         icon: Icon(
                           Icons.add_circle,
@@ -226,7 +225,6 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +277,7 @@ class _SearchPageState extends State<SearchPage> {
                               try {
                                 final products = await ApiService()
                                     .SearchProducts(value);
-              
+
                                 setState(() {
                                   _searchResults = products;
                                   _isLoading = false;
@@ -297,17 +295,24 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 16),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => FilterPage()
+                          )
+                        );
+                    },
                     child: Text(
                       "Filter",
                       style: TextStyle(
-                              color: Color(0xFF6055D8),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins"
-                            ),
+                        color: Color(0xFF6055D8),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Poppins",
+                      ),
                     ),
                   ),
                   Row(
@@ -319,64 +324,57 @@ class _SearchPageState extends State<SearchPage> {
                             fontFamily: "Poppins",
                             color: Color(0xFF817F7F),
                             fontSize: 14,
-                            fontWeight: FontWeight.w600
+                            fontWeight: FontWeight.w600,
                           ),
-                          children: <TextSpan> [
+                          children: <TextSpan>[
                             TextSpan(
                               text: "“ ${_controller.text} “",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600
-                          ),
-                            )
-                          ]
-                        ) 
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
-                        Spacer(),
-                        Text(
-                          "${_searchResults.length} Results Found",
-                          style: TextStyle(
-                            color: Color(0xFF6055D8),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Poppins"
-                          ),
-                        )
-                  ],
+                      ),
+                      Spacer(),
+                      Text(
+                        "${_searchResults.length} Results Found",
+                        style: TextStyle(
+                          color: Color(0xFF6055D8),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 16),
                   Expanded(
                     child: ListView.builder(
-                       itemCount: _searchResults.length,
-                       itemBuilder: (context, index) {
-                         int newIndex = index;
-                    
-                         if (index > 0) {
-                           newIndex += index;
-                         }
-                         int secondIndex = newIndex + 1;
-                         return Row(
-                           mainAxisAlignment: MainAxisAlignment.start,
-                           children: [
-                             newIndex < _searchResults.length
-                                 ? cardBuilder(
-                                     _searchResults,
-                                     newIndex,
-                                   
-                                   )
-                                 : SizedBox(),
-                             Spacer(),
-                             secondIndex < _searchResults.length
-                                 ? cardBuilder(
-                                     _searchResults,
-                                     secondIndex,
-                                   )
-                                 : SizedBox(),
-                           ],
-                         );
-                       },
-                     ),
+                      itemCount: _searchResults.length,
+                      itemBuilder: (context, index) {
+                        int newIndex = index;
+
+                        if (index > 0) {
+                          newIndex += index;
+                        }
+                        int secondIndex = newIndex + 1;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            newIndex < _searchResults.length
+                                ? cardBuilder(_searchResults, newIndex)
+                                : SizedBox(),
+                            Spacer(),
+                            secondIndex < _searchResults.length
+                                ? cardBuilder(_searchResults, secondIndex)
+                                : SizedBox(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                   bottomBarBuilder(),
                 ],

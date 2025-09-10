@@ -25,7 +25,6 @@ class ProductsListPageState extends State<ProductsListPage> {
   Widget cardBuilder(
     List<ProductModel> products,
     int index,
-    List<int> favourites,
   ) {
     return GestureDetector(
       onTap: () => {
@@ -221,7 +220,6 @@ class ProductsListPageState extends State<ProductsListPage> {
                                 ? cardBuilder(
                                     widget.products,
                                     newIndex,
-                                    widget.favourites,
                                   )
                                 : SizedBox(),
                             Spacer(),
@@ -229,7 +227,6 @@ class ProductsListPageState extends State<ProductsListPage> {
                                 ? cardBuilder(
                                     widget.products,
                                     secondIndex,
-                                    widget.favourites,
                                   )
                                 : SizedBox(),
                           ],

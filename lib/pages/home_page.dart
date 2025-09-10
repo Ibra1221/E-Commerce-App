@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'product.dart';
 import 'cart_page.dart';
 import 'search.dart';
+import '../providers/total_products.dart';
 
 void main() {
   runApp(const MyApp());
@@ -267,19 +268,19 @@ class _HomePageState extends State<HomePage> {
                 if (label == "Home" && currentPage != "Home")
                   {
                     Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage(
-                    title: "Home"
-                  )),
-                ),
-                    }
-                  else 
-                  if(label == "Search" && currentPage != "Search"){
-                    Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchPage()),
-                ),
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(title: "Home"),
+                      ),
+                    ),
                   }
+                else if (label == "Search" && currentPage != "Search")
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SearchPage()),
+                    ),
+                  },
               },
           },
           icon: icon,
@@ -290,6 +291,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<ProductModel> totalProducts = [];
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -386,28 +388,24 @@ class _HomePageState extends State<HomePage> {
                                   child: TextFormField(
                                     onTap: () {
                                       Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SearchPage(),
-                                    ),
-                                  );
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SearchPage(),
+                                        ),
+                                      );
                                     },
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(Icons.search),
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          30,
-                                        ),
+                                        borderRadius: BorderRadius.circular(30),
                                         borderSide: BorderSide(
                                           color: Color(0xFFF8F7F7),
                                           width: 0.1,
                                         ),
                                       ),
-                              
+
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          30,
-                                        ),
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
                                       labelText: "Search here",
                                       labelStyle: TextStyle(
@@ -499,6 +497,10 @@ class _HomePageState extends State<HomePage> {
                                   InkWell(
                                     onTap: () async {
                                       final products = await _products;
+
+                                      Provider.of<TotalProductsProvider>(
+                                        context,
+                                      ).setProducts(products!);
                                       if (products != null) {
                                         final featuredProducts = products
                                             .where(

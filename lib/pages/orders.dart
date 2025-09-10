@@ -43,7 +43,7 @@ class _OrdersPageState extends State<OrdersPage> {
                         Spacer(),
                         Center(
                           child: Text(
-                            "Checkout",
+                            "Orders",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
