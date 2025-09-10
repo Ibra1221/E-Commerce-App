@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favourite_provider.dart';
 import 'filter.dart';
+import 'profile.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -30,8 +31,8 @@ class _SearchPageState extends State<SearchPage> {
       decoration: BoxDecoration(
         color: Color(0xFFF8F7F7),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(45),
-          bottomRight: Radius.circular(45),
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
         ),
       ),
       child: Row(
@@ -44,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
             Icon(Icons.shopping_bag, color: Color(0xFF9E9E9E)),
             "Bag",
           ),
-          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)), "Account"),
+          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)), "Profile"),
         ],
       ),
     );
@@ -79,7 +80,16 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       MaterialPageRoute(builder: (context) => SearchPage()),
                     ),
+                  }
+                  else{
+                    if (label == "Profile" && currentPage != "Profile")
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                    ),
                   },
+                  }
               },
           },
           icon: icon,
@@ -238,148 +248,157 @@ class _SearchPageState extends State<SearchPage> {
             borderRadius: BorderRadius.circular(30),
             color: Colors.white,
           ),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: 311,
-                          height: 48,
-                          decoration: BoxDecoration(color: Color(0xFFF8F7F7)),
-                          child: TextField(
-                            controller: _controller,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              suffixIcon: Icon(Icons.cancel),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                  color: Color(0xFFF8F7F7),
-                                  width: 0.1,
+          child: Column(
+            children: [
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SizedBox(
+                    height: 680,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            Expanded(
+                              child: Container(
+                                width: 311,
+                                height: 48,
+                                decoration: BoxDecoration(color: Color(0xFFF8F7F7)),
+                                child: TextField(
+                                  controller: _controller,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.search),
+                                    suffixIcon: Icon(Icons.cancel),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(
+                                        color: Color(0xFFF8F7F7),
+                                        width: 0.1,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (value) async {
+                                    setState(() {
+                                      this._isLoading = true;
+                                    });
+                                    try {
+                                      final products = await ApiService()
+                                          .SearchProducts(value);
+                                  
+                                      setState(() {
+                                        _searchResults = products;
+                                        _isLoading = false;
+                                        success = true;
+                                      });
+                                    } catch (e) {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                      print("Search failed: $e");
+                                    }
+                                  },
                                 ),
                               ),
                             ),
-                            onChanged: (value) async {
-                              setState(() {
-                                this._isLoading = true;
-                              });
-                              try {
-                                final products = await ApiService()
-                                    .SearchProducts(value);
-
-                                setState(() {
-                                  _searchResults = products;
-                                  _isLoading = false;
-                                  success = true;
-                                });
-                              } catch (e) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                print("Search failed: $e");
-                              }
-                            },
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(
+                                builder: (context) => FilterPage()
+                                )
+                              );
+                          },
+                          child: Text(
+                            "Filter",
+                            style: TextStyle(
+                              color: Color(0xFF6055D8),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context, 
-                        MaterialPageRoute(
-                          builder: (context) => FilterPage()
-                          )
-                        );
-                    },
-                    child: Text(
-                      "Filter",
-                      style: TextStyle(
-                        color: Color(0xFF6055D8),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins",
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "Results for",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Color(0xFF817F7F),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: "“ ${_controller.text} “",
+                        Row(
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: "Results for",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  color: Color(0xFF817F7F),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: "“ ${_controller.text} “",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              "${_searchResults.length} Results Found",
                               style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 14,
+                                color: Color(0xFF6055D8),
+                                fontSize: 12,
                                 fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins",
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Spacer(),
-                      Text(
-                        "${_searchResults.length} Results Found",
-                        style: TextStyle(
-                          color: Color(0xFF6055D8),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "Poppins",
+                        SizedBox(height: 16),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: _searchResults.length,
+                            itemBuilder: (context, index) {
+                              int newIndex = index;
+                                  
+                              if (index > 0) {
+                                newIndex += index;
+                              }
+                              int secondIndex = newIndex + 1;
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  newIndex < _searchResults.length
+                                      ? cardBuilder(_searchResults, newIndex)
+                                      : SizedBox(),
+                                  Spacer(),
+                                  secondIndex < _searchResults.length
+                                      ? cardBuilder(_searchResults, secondIndex)
+                                      : SizedBox(),
+                                ],
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _searchResults.length,
-                      itemBuilder: (context, index) {
-                        int newIndex = index;
-
-                        if (index > 0) {
-                          newIndex += index;
-                        }
-                        int secondIndex = newIndex + 1;
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            newIndex < _searchResults.length
-                                ? cardBuilder(_searchResults, newIndex)
-                                : SizedBox(),
-                            Spacer(),
-                            secondIndex < _searchResults.length
-                                ? cardBuilder(_searchResults, secondIndex)
-                                : SizedBox(),
-                          ],
-                        );
-                      },
+                       
+                      ],
                     ),
                   ),
-                  bottomBarBuilder(),
-                ],
+                ),
               ),
-            ),
+              Spacer(),
+               bottomBarBuilder(),
+            ],
           ),
         ),
       ),

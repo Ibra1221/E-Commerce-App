@@ -11,6 +11,7 @@ import 'product.dart';
 import 'cart_page.dart';
 import 'search.dart';
 import '../providers/total_products.dart';
+import 'profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -126,6 +127,19 @@ class _HomePageState extends State<HomePage> {
                       products[index].images![0],
                       width: 126,
                       height: 99,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(
+                          child: Text(
+                            "Error loading the image"  ,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600
+                            ),     
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Positioned(
@@ -231,8 +245,8 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
         color: Color(0xFFF8F7F7),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(45),
-          bottomRight: Radius.circular(45),
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
         ),
       ),
       child: Row(
@@ -245,7 +259,7 @@ class _HomePageState extends State<HomePage> {
             Icon(Icons.shopping_bag, color: Color(0xFF9E9E9E)),
             "Bag",
           ),
-          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)), "Account"),
+          iconBuilder(Icon(Icons.person, color: Color(0xFF9E9E9E)), "Profile"),
         ],
       ),
     );
@@ -280,7 +294,16 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(builder: (context) => SearchPage()),
                     ),
+                  }
+                  else{
+                    if (label == "Profile" && currentPage != "Profile")
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                    ),
                   },
+                  }
               },
           },
           icon: icon,
@@ -326,10 +349,21 @@ class _HomePageState extends State<HomePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      SizedBox.square(
-                                        dimension: 24,
-                                        child: Image.asset(
-                                          "assets/images/no-user_17847670.png",
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfilePage(),
+                                            ),
+                                          );
+                                        },
+                                        child: SizedBox.square(
+                                          dimension: 24,
+                                          child: Image.asset(
+                                            "assets/images/no-user_17847670.png",
+                                          ),
                                         ),
                                       ),
                                       RichText(
