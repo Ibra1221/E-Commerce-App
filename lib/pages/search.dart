@@ -99,6 +99,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget cardBuilder(List<ProductModel> products, int index) {
+    bool isFavourited = Provider.of<FavouriteProvider>(
+                                context,
+                                listen: true,
+                              ).favourites.any(
+                                (item) => item.id == products[index].id,
+                              );
     return GestureDetector(
       onTap: () => {
         setState(() {
@@ -145,10 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                         }),
                       },
                       icon: Icon(
-                        !Provider.of<FavouriteProvider>(
-                              context,
-                              listen: true,
-                            ).favourites.contains(products[index])
+                        !isFavourited
                             ? Icons.favorite_border
                             : Icons.favorite,
                       ),

@@ -24,6 +24,12 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
+    bool isFavourited = Provider.of<FavouriteProvider>(
+                                context,
+                                listen: true,
+                              ).favourites.any(
+                                (item) => item.id == product.id,
+                              );
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -79,8 +85,7 @@ class _ProductPageState extends State<ProductPage> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: !Provider.of<FavouriteProvider>(context, listen: true)
-                                  .favourites.contains(widget.product)? 
+                                  icon: !isFavourited? 
                                   Icon(Icons.favorite_border):
                                   Icon(Icons.favorite, color: Color(0xFF7C7979)) ,
                                   style: IconButton.styleFrom(

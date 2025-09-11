@@ -100,12 +100,12 @@ class _OrdersPageState extends State<OrdersPage> {
                               ),
                       ],
                     ),
+                    SizedBox(height: 20,),
                     Expanded(
                       child: ListView.builder(
                       itemCount: ordersList.orders.length,
                       itemBuilder: (context, index) {
-                                          ProductModel order = ordersList.orders[index];
-                      
+                        ProductModel order = ordersList.orders[index];
                         return SizedBox(
                           width: 343,
                           height: 110,

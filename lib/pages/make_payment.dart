@@ -2,25 +2,6 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'login.dart';
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MakePaymentPage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
 
 class MakePaymentPage extends StatefulWidget {
   const MakePaymentPage({super.key, required this.title});

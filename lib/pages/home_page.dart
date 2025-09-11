@@ -13,26 +13,6 @@ import 'search.dart';
 import '../providers/total_products.dart';
 import 'profile.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
   final String title;
@@ -50,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   Future<Response>? _popularResponse;
   List<int> favouriteIndices = [];
   List<int> favouritePopularIndices = [];
+  
   @override
   void initState() {
     super.initState();
@@ -96,6 +77,12 @@ class _HomePageState extends State<HomePage> {
     int index,
     List<int> favourites,
   ) {
+    bool isFavourited = Provider.of<FavouriteProvider>(
+                                context,
+                                listen: true,
+                              ).favourites.any(
+                                (item) => item.id == products[index].id,
+                              );
     return GestureDetector(
       onTap: () => {
         setState(() {
@@ -130,13 +117,13 @@ class _HomePageState extends State<HomePage> {
                       errorBuilder: (context, error, stackTrace) {
                         return Center(
                           child: Text(
-                            "Error loading the image"  ,
+                            "Error loading the image",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 11,
-                              fontWeight: FontWeight.w600
-                            ),     
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         );
                       },
@@ -146,23 +133,27 @@ class _HomePageState extends State<HomePage> {
                     left: 84,
                     top: 8,
                     child: IconButton(
-                      icon:
-                          !Provider.of<FavouriteProvider>(
-                            context,
-                            listen: true,
-                          ).favourites.contains(products[index])
+                      icon: !isFavourited
                           ? Icon(Icons.favorite_border)
                           : Icon(Icons.favorite),
                       style: IconButton.styleFrom(
                         backgroundColor: Color(0xFFF8F7F7),
                       ),
                       onPressed: () {
-                        setState(() {
+                          setState(() {
+                            isFavourited =
+                              Provider.of<FavouriteProvider>(
+                                context,
+                                listen: false,
+                              ).favourites.any(
+                                (item) => item.id == products[index].id,
+                              );
                           Provider.of<FavouriteProvider>(
                             context,
                             listen: false,
                           ).addToFavourites(products[index]);
-                        });
+                          });
+                        
                       },
                     ),
                   ),
@@ -295,15 +286,18 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(builder: (context) => SearchPage()),
                     ),
                   }
-                  else{
-                    if (label == "Profile" && currentPage != "Profile")
+                else
                   {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()),
-                    ),
+                    if (label == "Profile" && currentPage != "Profile")
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(),
+                          ),
+                        ),
+                      },
                   },
-                  }
               },
           },
           icon: icon,
@@ -534,6 +528,7 @@ class _HomePageState extends State<HomePage> {
 
                                       Provider.of<TotalProductsProvider>(
                                         context,
+                                        listen: false
                                       ).setProducts(products!);
                                       if (products != null) {
                                         final featuredProducts = products

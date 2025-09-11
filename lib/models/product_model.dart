@@ -1,6 +1,15 @@
+import 'package:hive/hive.dart';
+
+part 'product_model.g.dart';
+
+
+@HiveType(typeId: 0)
 class Dimensions {
+  @HiveField(0)
   num? width;
+  @HiveField(1)
   num? height;
+  @HiveField(2)
   num? depth;
 
   Dimensions({this.width, this.height, this.depth});
@@ -13,11 +22,17 @@ class Dimensions {
   }
 }
 
+@HiveType(typeId: 1)
 class Review {
+  @HiveField(0)
   num? rating;
+  @HiveField(1)
   String? comment;
+  @HiveField(2)
   String? date;
+  @HiveField(3)
   String? reviewerName;
+  @HiveField(4)
   String? reviewerEmail;
   Review({
     this.rating,
@@ -37,10 +52,15 @@ class Review {
   }
 }
 
+@HiveType(typeId: 2)
 class Meta {
+  @HiveField(0)
   String? createdAt;
+  @HiveField(1)
   String? updatedAt;
+  @HiveField(2)
   String? barcode;
+  @HiveField(3)
   String? qrCode;
   Meta({
     this.createdAt,
@@ -58,28 +78,51 @@ class Meta {
   }
 }
 
+@HiveType(typeId: 3)
 class ProductModel {
+  @HiveField(0)
   num? id;
+  @HiveField(1)
   String? title;
+  @HiveField(2)
   String? description;
+  @HiveField(3)
   String? category;
+  @HiveField(4)
   num? price;
+  @HiveField(5)
   num? discountPercentage;
+  @HiveField(6)
   num? rating;
+  @HiveField(7)
   int? stock;
+  @HiveField(8)
   List<String>? tags;
+  @HiveField(9)
   String? brand;
+  @HiveField(10)
   String? sku;
+  @HiveField(11)
   num? weight;
+  @HiveField(12)
   Dimensions? dimensions;
+  @HiveField(13)
   String? warrantyInformation;
+  @HiveField(14)
   String? shippingInformation;
+  @HiveField(15)
   String? availabilityStatus;
+  @HiveField(16)
   List<Review>? reviews;
+  @HiveField(17)
   String? returnPolicy;
+  @HiveField(18)
   int? minimumOrderQuantity;
+  @HiveField(19)
   Meta? meta;
+  @HiveField(20)
   String? thumbnail;
+  @HiveField(21)
   List<String>? images;
   
   ProductModel({

@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import '../models/cart_item_model.dart';
 import '../models/product_model.dart';
+import 'package:hive/hive.dart';
 
 class CartProvider extends ChangeNotifier {
   final List<CartItem> _cartItems = [];
   List<CartItem> get cartitems => _cartItems;
+  var box = Hive.box('cartBox');
+
+  void getStoredItems() {
+    if (box.isNotEmpty) {
+      _cartItems.clear();
+      _cartItems.addAll(
+        box.get("Cart Items", defaultValue: []).cast<CartItem>(),
+      );
+      notifyListeners();
+    }
+  }
+
+  void setStoredItems() {
+    box.put("Cart Items", _cartItems);
+  }
 
   void addToCart(ProductModel product, int quantity) {
     final existingIndex = _cartItems.indexWhere(
@@ -16,6 +32,7 @@ class CartProvider extends ChangeNotifier {
     } else {
       _cartItems.add(CartItem(product: product, quantity: quantity));
     }
+    setStoredItems();
     notifyListeners();
   }
 
@@ -32,6 +49,7 @@ class CartProvider extends ChangeNotifier {
     } else {
       return;
     }
+    setStoredItems();
     notifyListeners();
   }
 
@@ -47,7 +65,7 @@ class CartProvider extends ChangeNotifier {
     return _cartItems.fold(
       0,
       (discount, item) =>
-          discount + item.totalPrice * item.product.discountPercentage!/100,
+          discount + item.totalPrice * item.product.discountPercentage! / 100,
     );
   }
 

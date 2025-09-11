@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
-  runApp(const ErrorPage());
-}
-
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});
   @override

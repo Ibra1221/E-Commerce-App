@@ -1,26 +1,7 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'home_page.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const LoginPage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.title});
@@ -31,6 +12,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late Box box;
+
+  @override
+  void initState() {
+    super.initState();
+    box = Hive.box('myBox');
+    if (!box.containsKey('isLoggedIn')) {
+      box.put('isLoggedIn', false);
+    }
+  }
+
   var _formKey = GlobalKey<FormState>();
   bool _isObscure = true;
 
@@ -56,8 +48,8 @@ class _LoginPageState extends State<LoginPage> {
           height: 812,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(30)
-            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -206,14 +198,17 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () => {
-                        if (_submit() != null)
-                          {MainPage.controller.jumpToPage(0)},
-                          Navigator.push(context, 
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(title: "HomePage",)
-                            )
-                          )
+                      onPressed: () {
+                        if (_submit() != null) {
+                          box.put('isLoggedIn', true);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const HomePage(title: "HomePage"),
+                            ),
+                          );
+                        }
                       },
                       child: Text(
                         "Login",

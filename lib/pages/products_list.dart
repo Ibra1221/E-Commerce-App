@@ -26,6 +26,13 @@ class ProductsListPageState extends State<ProductsListPage> {
     List<ProductModel> products,
     int index,
   ) {
+
+    bool isFavourited = Provider.of<FavouriteProvider>(
+                                context,
+                                listen: true,
+                              ).favourites.any(
+                                (item) => item.id == products[index].id,
+                              );
     return GestureDetector(
       onTap: () => {
         setState(() {
@@ -65,16 +72,24 @@ class ProductsListPageState extends State<ProductsListPage> {
                     left: 113,
                     top: 8,
                     child: IconButton(
-                      onPressed: () => {
-                        setState(() {
-                          Provider.of<FavouriteProvider>(context, listen: false)
-                              .addToFavourites(products[index]);
-                        }),
+                      onPressed: () {
+                          setState(() {
+                            isFavourited =
+                              Provider.of<FavouriteProvider>(
+                                context,
+                                listen: false,
+                              ).favourites.any(
+                                (item) => item.id == products[index].id,
+                              );
+                          Provider.of<FavouriteProvider>(
+                            context,
+                            listen: false,
+                          ).addToFavourites(products[index]);
+                          });
+                        
                       },
                       icon: Icon(
-                        !Provider.of<FavouriteProvider>(
-                          context, listen: true
-                          ).favourites.contains(products[index])
+                        !isFavourited
                             ? Icons.favorite_border
                             : Icons.favorite,
                       ),

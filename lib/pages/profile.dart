@@ -5,6 +5,7 @@ import 'cart_page.dart';
 import 'home_page.dart';
 import 'search.dart';
 import 'settings.dart';
+import 'package:hive/hive.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -173,10 +174,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
-                                        context, 
+                                        context,
                                         MaterialPageRoute(
-                                        builder: (context) => SettingsPage()
-                                        )
+                                          builder: (context) => SettingsPage(),
+                                        ),
                                       );
                                     },
                                     child: Row(
@@ -280,6 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(height: 141),
                           InkWell(
                             onTap: () {
+                              Hive.box('myBox').put('isLoggedIn', false);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
