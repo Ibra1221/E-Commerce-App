@@ -49,12 +49,25 @@ class _CartPageState extends State<CartPage> {
     return Column(
       children: [
         IconButton(
+          style: ButtonStyle(
+            animationDuration: Duration(milliseconds: 200)
+          ),
           onPressed: () => {
             if (label == "Bag" && currentPage != "Bag")
               {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CartPage()),
+                  PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  CartPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                 ),
               }
             else
@@ -63,27 +76,56 @@ class _CartPageState extends State<CartPage> {
                   {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(title: "Home"),
-                      ),
+                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  HomePage(title: "HomePage",),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                     ),
                   }
                 else if (label == "Search" && currentPage != "Search")
                   {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchPage()),
+                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  SearchPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                     ),
                   }
-                  else{
-                    if (label == "Profile" && currentPage != "Profile")
+                else
                   {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()),
-                    ),
+                    if (label == "Profile" && currentPage != "Profile")
+                      {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProfilePage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                        ),
+                      },
                   },
-                  }
               },
           },
           icon: icon,
@@ -118,9 +160,11 @@ class _CartPageState extends State<CartPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
+                              
                               icon: Icon(Icons.arrow_back),
                               style: IconButton.styleFrom(
                                 backgroundColor: Color(0xFFF8F7F7),
+                                animationDuration: Duration(milliseconds: 200)
                               ),
                               onPressed: () {
                                 Navigator.pop(context);
@@ -136,6 +180,9 @@ class _CartPageState extends State<CartPage> {
                               ),
                             ),
                             IconButton(
+                              style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                               onPressed: () {},
                               icon: Icon(Icons.more_vert_rounded),
                             ),
@@ -156,13 +203,25 @@ class _CartPageState extends State<CartPage> {
                                   onTap: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ProductPage(
-                                          title: "Product Page",
-                                          product: item.product,
-                                          index: cart.cartitems.indexOf(item),
-                                        ),
-                                      ),
+                                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProductPage(
+                                    title: "Product Page",
+                                    product: item.product,
+                                    index: index,
+                                    ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                  ),
+                                );
+                              },
+
+                            ),
                                     );
                                   },
                                   child: Card(
@@ -207,6 +266,9 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                     ),
                                                     IconButton(
+                                                      style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                                                       onPressed: () {
                                                         setState(() {
                                                           cart.removeFromCart(
@@ -495,6 +557,7 @@ class _CartPageState extends State<CartPage> {
                               backgroundColor: WidgetStatePropertyAll(
                                 Color(0xFF6055D8),
                               ),
+                              animationDuration: Duration(milliseconds: 200)
                             ),
                             onPressed: () {
                               Navigator.push(

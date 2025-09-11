@@ -115,10 +115,7 @@ class _FilterPageState extends State<FilterPage> {
         child: Container(
            decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
+                    borderRadius: BorderRadius.circular(30)
                   ),
           width: 375,
           height: 812,
@@ -134,6 +131,7 @@ class _FilterPageState extends State<FilterPage> {
                         icon: Icon(Icons.arrow_back),
                         style: IconButton.styleFrom(
                           backgroundColor: Color(0xFFF8F7F7),
+                          animationDuration: Duration(milliseconds: 200)
                         ),
                         onPressed: () {
                           Navigator.pop(context);
@@ -173,19 +171,20 @@ class _FilterPageState extends State<FilterPage> {
                         width: 74,
                         height: 45,
                         child: TextButton(
+                          
                           onPressed: () {
                             setState(() {
                               selectedGenderIndex = index;
                             });
                           },
-                          style: TextButton.styleFrom(
+                          style: TextButton.styleFrom(           
                             backgroundColor: selectedGenderIndex == index
                                 ? Color(0xFF6055D8)
                                 : Color(0xFFF8F7F7),
                             foregroundColor: selectedGenderIndex == index
                                 ? Colors.white
                                 : Color(0xFF9B9999),
-                            animationDuration: Duration(milliseconds: 500),
+                            animationDuration: Duration(milliseconds: 200),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -224,6 +223,7 @@ class _FilterPageState extends State<FilterPage> {
                             width: 107,
                             height: 45,
                             child: TextButton(
+                              
                               onPressed: () {
                                 setState(() {
                                   if (selectedBrandsIndices.contains(index)) {
@@ -373,7 +373,9 @@ class _FilterPageState extends State<FilterPage> {
                     width: 343,
                     height: 48,
                     child: TextButton(
+                      
                       style: ButtonStyle(
+                        animationDuration: Duration(milliseconds: 200),
                         backgroundColor: WidgetStatePropertyAll(
                           Color(0xFF6055D8),
                         ),

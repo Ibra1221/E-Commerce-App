@@ -38,15 +38,25 @@ class ProductsListPageState extends State<ProductsListPage> {
         setState(() {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  ProductPage(
-                  title: "Product", 
-                  product: products[index],
-                  index: index,
-                  ),
+            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProductPage(
+                                    title: "Product Page",
+                                    product: products[index],
+                                    index: index,
+                                    ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                  ),
+                                );
+                              },
 
-            ),
+                            ),
           );
         }),
       },
@@ -72,6 +82,9 @@ class ProductsListPageState extends State<ProductsListPage> {
                     left: 113,
                     top: 8,
                     child: IconButton(
+                      style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                       onPressed: () {
                           setState(() {
                             isFavourited =
@@ -152,6 +165,9 @@ class ProductsListPageState extends State<ProductsListPage> {
                     SizedBox.square(
                       dimension: 24,
                       child: IconButton(
+                        style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                         padding: EdgeInsets.only(right: 12),
                         constraints: BoxConstraints(),
                         onPressed: () {
@@ -199,6 +215,7 @@ class ProductsListPageState extends State<ProductsListPage> {
                       IconButton(
                         icon: Icon(Icons.arrow_back),
                         style: IconButton.styleFrom(
+                          animationDuration: Duration(milliseconds: 200),
                           backgroundColor: Color(0xFFF8F7F7),
                         ),
                         onPressed: () {

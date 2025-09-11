@@ -29,6 +29,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
         Spacer(),
         IconButton(
+          style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
           onPressed: () {},
           icon: selected
               ? Icon(Icons.check, color: Color(0xFF6055D8))
@@ -70,6 +73,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         icon: Icon(Icons.arrow_back),
                         style: IconButton.styleFrom(
                           backgroundColor: Color(0xFFF8F7F7),
+                          animationDuration: Duration(milliseconds: 200)
                         ),
                         onPressed: () {
                           Navigator.pop(context);
@@ -96,6 +100,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Row(
                     children: [
                       IconButton(
+                        style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                         icon: Icon(
                           Mdi.mapMarkerRadius,
                           color: Color(0xFF6055D8),
@@ -130,6 +137,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Row(
                     children: [
                       IconButton(
+                        style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                         icon: Icon(
                           Icons.watch_later,
                           color: Color(0xFF6055D8),
@@ -350,6 +360,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                       Spacer(),
                       IconButton(
+                        style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                         onPressed: () {},
                         icon: Icon(Icons.add, color: Color(0xFF6055D8)),
                       ),
@@ -363,6 +376,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         backgroundColor: WidgetStatePropertyAll(
                           Color(0xFF6055D8),
                         ),
+                        animationDuration: Duration(milliseconds: 200)
                       ),
                       onPressed: () {
                         setState(() {

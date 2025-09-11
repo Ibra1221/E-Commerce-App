@@ -79,6 +79,7 @@ class _ProductPageState extends State<ProductPage> {
                                   icon: Icon(Icons.arrow_back),
                                   style: IconButton.styleFrom(
                                     backgroundColor: Color(0xFFF8F7F7),
+                                    animationDuration: Duration(milliseconds: 200)
                                   ),
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -89,6 +90,7 @@ class _ProductPageState extends State<ProductPage> {
                                   Icon(Icons.favorite_border):
                                   Icon(Icons.favorite, color: Color(0xFF7C7979)) ,
                                   style: IconButton.styleFrom(
+                                    animationDuration: Duration(milliseconds: 200),
                                     backgroundColor: Color(0xFFF8F7F7),
                                   ),
                                   onPressed: () {
@@ -209,6 +211,7 @@ class _ProductPageState extends State<ProductPage> {
                                     child: ElevatedButton(
                                       onPressed: () {},
                                       style: ElevatedButton.styleFrom(
+                                        animationDuration: Duration(milliseconds: 200),
                                         backgroundColor: const Color(0xFF6055D8),
                                         padding:
                                             const EdgeInsets.symmetric(vertical: 16),
@@ -232,6 +235,7 @@ class _ProductPageState extends State<ProductPage> {
                                       ).addToCart(product, 1);
                                     },
                                     style: ElevatedButton.styleFrom(
+                                      animationDuration: Duration(milliseconds: 200),
                                       shape: const CircleBorder(),
                                       backgroundColor: Colors.grey[200],
                                       padding: const EdgeInsets.all(14),

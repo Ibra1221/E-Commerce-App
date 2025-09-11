@@ -55,12 +55,25 @@ class _SearchPageState extends State<SearchPage> {
     return Column(
       children: [
         IconButton(
+          style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
           onPressed: () => {
             if (label == "Bag" && currentPage != "Bag")
               {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CartPage()),
+                  PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  CartPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                 ),
               }
             else
@@ -69,27 +82,56 @@ class _SearchPageState extends State<SearchPage> {
                   {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(title: "Home"),
-                      ),
+                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  HomePage(title: "HomePage",),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                     ),
                   }
                 else if (label == "Search" && currentPage != "Search")
                   {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchPage()),
+                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  SearchPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                     ),
                   }
-                  else{
-                    if (label == "Profile" && currentPage != "Profile")
+                else
                   {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()),
-                    ),
+                    if (label == "Profile" && currentPage != "Profile")
+                      {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProfilePage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                        ),
+                      },
                   },
-                  }
               },
           },
           icon: icon,
@@ -110,13 +152,25 @@ class _SearchPageState extends State<SearchPage> {
         setState(() {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ProductPage(
-                title: "Product",
-                product: products[index],
-                index: index,
-              ),
-            ),
+            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProductPage(
+                                    title: "Product Page",
+                                    product: products[index],
+                                    index: index,
+                                    ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                  ),
+                                );
+                              },
+
+                            ),
           );
         }),
       },
@@ -142,6 +196,9 @@ class _SearchPageState extends State<SearchPage> {
                     left: 113,
                     top: 8,
                     child: IconButton(
+                      style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                       onPressed: () => {
                         setState(() {
                           Provider.of<FavouriteProvider>(
@@ -214,6 +271,9 @@ class _SearchPageState extends State<SearchPage> {
                     SizedBox.square(
                       dimension: 24,
                       child: IconButton(
+                        style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                         padding: EdgeInsets.only(right: 12),
                         constraints: BoxConstraints(),
                         onPressed: () {

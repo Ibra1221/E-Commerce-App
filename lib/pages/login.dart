@@ -124,6 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.lock),
                                 suffixIcon: IconButton(
+                                  style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                                   onPressed: () => {
                                     setState(() {
                                       _isObscure = !_isObscure;
@@ -197,6 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
+                        animationDuration: Duration(milliseconds: 200)
                       ),
                       onPressed: () {
                         if (_submit() != null) {

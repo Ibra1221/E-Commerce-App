@@ -88,13 +88,25 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ProductPage(
-                title: "Product",
-                product: products[index],
-                index: index,
-              ),
-            ),
+            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProductPage(
+                                    title: "Product Page",
+                                    product: products[index],
+                                    index: index,
+                                    ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                  ),
+                                );
+                              },
+
+                            ),
           );
         }),
       },
@@ -138,6 +150,7 @@ class _HomePageState extends State<HomePage> {
                           : Icon(Icons.favorite),
                       style: IconButton.styleFrom(
                         backgroundColor: Color(0xFFF8F7F7),
+                        animationDuration: Duration(milliseconds: 200)
                       ),
                       onPressed: () {
                           setState(() {
@@ -260,12 +273,25 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         IconButton(
+          style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
           onPressed: () => {
             if (label == "Bag" && currentPage != "Bag")
               {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CartPage()),
+                  PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  CartPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                 ),
               }
             else
@@ -274,16 +300,34 @@ class _HomePageState extends State<HomePage> {
                   {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(title: "Home"),
-                      ),
+                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  HomePage(title: "HomePage",),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                     ),
                   }
                 else if (label == "Search" && currentPage != "Search")
                   {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchPage()),
+                      PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  SearchPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                     ),
                   }
                 else
@@ -292,9 +336,17 @@ class _HomePageState extends State<HomePage> {
                       {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
-                          ),
+                          PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProfilePage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
                         ),
                       },
                   },
@@ -391,6 +443,9 @@ class _HomePageState extends State<HomePage> {
                                     width: 17,
                                     height: 20,
                                     child: IconButton(
+                                      style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                                       onPressed: () {},
                                       icon: Icon(
                                         Icons.notifications,
@@ -417,9 +472,21 @@ class _HomePageState extends State<HomePage> {
                                     onTap: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SearchPage(),
-                                        ),
+                                       PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  SearchPage(),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                  ),
+                                );
+                              },
+
+                            ),
                                       );
                                     },
                                     decoration: InputDecoration(
@@ -544,14 +611,24 @@ class _HomePageState extends State<HomePage> {
                                             .toList();
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductsListPage(
-                                                  products: featuredProducts,
-                                                  favourites: favouriteIndices,
-                                                  title: "Featured",
-                                                ),
-                                          ),
+                                          PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => ProductsListPage(
+                                        products: featuredProducts,
+                                        favourites: favouriteIndices,
+                                        title: "Featured",
+                                      ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                final offsetAnimation = Tween<Offset>(
+                              begin: Offset(1.0, 0.0), 
+                              end: Offset.zero,        
+                            ).animate(animation);
+                                return SlideTransition(
+                                  position:offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            )
                                         );
                                       }
                                     },
@@ -623,15 +700,24 @@ class _HomePageState extends State<HomePage> {
                                       if (popularProducts != null) {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductsListPage(
-                                                  products: popularProducts,
-                                                  favourites:
-                                                      favouritePopularIndices,
-                                                  title: "Most Popular",
-                                                ),
-                                          ),
+                                          PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => ProductsListPage(
+                                        products: popularProducts,
+                                        favourites: favouriteIndices,
+                                        title: "Featured",
+                                      ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                final offsetAnimation = Tween<Offset>(
+                              begin: Offset(1.0, 0.0), 
+                              end: Offset.zero,        
+                            ).animate(animation);
+                                return SlideTransition(
+                                  position:offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            )
                                         );
                                       }
                                     },

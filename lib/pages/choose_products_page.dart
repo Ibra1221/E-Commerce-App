@@ -57,13 +57,24 @@ class _ChooseProductsPageState extends State<ChooseProductsPage> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => {
+                        style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 100)
+                              ),
+                        onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(title: "Login"),
+                            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  LoginPage(title: "Login"),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
                             ),
-                          ),
+                          );
                         },
                         child: Text(
                           "Skip",
@@ -130,6 +141,9 @@ class _ChooseProductsPageState extends State<ChooseProductsPage> {
                         ),
                         Spacer(),
                         TextButton(
+                          style: ButtonStyle(
+                                animationDuration: Duration(milliseconds: 200)
+                              ),
                           onPressed: () => {
                             MainPage.controller.nextPage(
                               duration: Duration(milliseconds: 300),

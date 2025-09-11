@@ -32,8 +32,10 @@ class _OrdersPageState extends State<OrdersPage> {
                 Row(
                       children: [
                         IconButton(
+                          
                           icon: Icon(Icons.arrow_back),
                           style: IconButton.styleFrom(
+                            animationDuration: Duration(milliseconds: 200),
                             backgroundColor: Color(0xFFF8F7F7),
                           ),
                           onPressed: () {
@@ -113,13 +115,25 @@ class _OrdersPageState extends State<OrdersPage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductPage(
+                                PageRouteBuilder(
+                              pageBuilder: (_, __, ___) =>
+                                  ProductPage(
                                     title: "Product Page",
                                     product: order,
-                                    index: ordersList.orders.indexOf(order),
+                                    index: index,
+                                    ),
+                              transitionDuration: Duration(milliseconds: 500),
+                              transitionsBuilder: (_, animation, __, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
                                   ),
-                                ),
+                                );
+                              },
+
+                            ),
                               );
                             },
                             child: Card(
@@ -185,8 +199,12 @@ class _OrdersPageState extends State<OrdersPage> {
                                           //Spacer(),
                                           SizedBox(width: 40,),
                                           TextButton(
+                                            
                                             onPressed: (){}, 
                                             style: ButtonStyle(
+                                              animationDuration: Duration(
+                                                milliseconds: 2
+                                                ),
                                               backgroundColor: WidgetStatePropertyAll(Color(0xFF6055D8))
                                             ),
                                             child: Text(
