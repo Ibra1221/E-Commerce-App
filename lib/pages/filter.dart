@@ -113,10 +113,13 @@ class _FilterPageState extends State<FilterPage> {
       backgroundColor: Colors.black,
       body: Center(
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(30),
-          ),
+           decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
           width: 375,
           height: 812,
           child: SafeArea(

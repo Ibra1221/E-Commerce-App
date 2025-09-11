@@ -4,6 +4,7 @@ import 'login.dart';
 import 'cart_page.dart';
 import 'home_page.dart';
 import 'search.dart';
+import 'settings.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,7 +13,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   Widget bottomBarBuilder() {
     return Container(
       width: 375,
@@ -70,15 +70,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       MaterialPageRoute(builder: (context) => SearchPage()),
                     ),
                   }
-                  else{
-                    if (label == "Profile" && currentPage != "Profile")
+                else
                   {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SearchPage()),
-                    ),
+                    if (label == "Profile" && currentPage != "Profile")
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage()),
+                        ),
+                      },
                   },
-                  }
               },
           },
           icon: icon,
@@ -169,19 +170,29 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.settings),
-                                      SizedBox(width: 12),
-                                      Text(
-                                        "Setting",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context, 
+                                        MaterialPageRoute(
+                                        builder: (context) => SettingsPage()
+                                        )
+                                      );
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.settings),
+                                        SizedBox(width: 12),
+                                        Text(
+                                          "Setting",
+                                          style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Icon(Icons.arrow_forward),
@@ -277,7 +288,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               );
                             },
-                
+
                             child: Text(
                               "Sign Out",
                               style: TextStyle(
@@ -295,7 +306,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Spacer(),
-              bottomBarBuilder()
+              bottomBarBuilder(),
             ],
           ),
         ),
